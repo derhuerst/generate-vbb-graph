@@ -11,14 +11,20 @@
 ## Installing
 
 ```shell
-npm install derhuerst/generate-vbb-graph
+npm install -g generate-vbb-graph
 ```
 
 
 ## Usage
 
-```js
-todo
+```
+Usage:
+    generate-vbb-graph [-p subway,tram]
+Options:
+    --products  -p  A list of products. These are available:
+                    suburban, subway, regional, tram, ferry, bus
+Examples:
+    generate-vbb-graph -p subway,tram
 ```
 
 

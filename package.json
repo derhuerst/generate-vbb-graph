@@ -1,12 +1,15 @@
 {
+	"preferGlobal": true,
 	"name": "generate-vbb-graph",
 	"description": "Berlin & Brandenburg public transport as JGF file.",
 	"version": "0.1.0",
-	"main": "index.js",
 	"files": [
-		"index.js",
+		"cli.js",
 		"compute-graph.js"
 	],
+	"bin": {
+		"generate-vbb-graph": "./cli.js"
+	},
 	"keywords": [
 		"vbb",
 		"public transport",
@@ -23,6 +26,7 @@
 		"node": ">=6"
 	},
 	"dependencies": {
+		"minimist": "^1.2.0",
 		"ndjson": "^1.5.0",
 		"vbb-lines": "^3.2.0",
 		"vbb-stations": "^5.2.0"
@@ -32,7 +36,7 @@
 		"tap-min": "^1.2.1"
 	},
 	"scripts": {
-		"build": "node index.js > vbb.graph.json",
+		"build": "./cli.js > vbb.graph.json",
 		"test": "node test.js | tap-min",
 		"prepublishOnly": "npm test"
 	}
