@@ -1,0 +1,31 @@
+{
+	"name": "generate-vbb-graph",
+	"description": "Berlin & Brandenburg public transport as JGF file.",
+	"version": "0.1.0",
+	"main": "index.js",
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"vbb", "public transport", "graph", "jgf", "json"
+	],
+	"author": "Jannis R <mail@jannisr.de>",
+	"homepage": "https://github.com/derhuerst/generate-vbb-graph",
+	"repository": "derhuerst/generate-vbb-graph",
+	"bugs": "https://github.com/derhuerst/generate-vbb-graph/issues",
+	"license": "ISC",
+	"engines": {
+		"node": ">=6"
+	},
+	"dependencies": {
+	},
+	"devDependencies": {
+		"tape": "^4.6.3",
+		"tap-min": "^1.2.1"
+	},
+	"scripts": {
+		"build": "node index.js > vbb.graph.json",
+		"test": "node test.js | tap-min",
+		"prepublishOnly": "npm test"
+	}
+}
