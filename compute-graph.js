@@ -1,7 +1,7 @@
 'use strict'
 
 const allStations = require('vbb-stations/full.json')
-const readLines = require('vbb-lines')
+const lines = require('vbb-lines')
 
 // stop -> station mapping
 const stationOf = {}
@@ -10,16 +10,19 @@ for (let id in allStations) {
 	for (let stop of allStations[id].stops) stationOf[stop.id] = id
 }
 
-const computeGraph = async (nodes, edges) => {
-	const lines = await readLines(true, 'all')
+const computeGraph = (filterLines, filterStations, nodes, edges, cb) => {
 	const wroteNode = {} // byID
 
-	for (let l of lines) {
-		if (l.product !== 'suburban' && l.product !== 'subway') return false // todo
+	lines()
+	.on('end', cb)
+	.on('error', cb)
+	.on('data', (l) => {
+		if (!filterLines(l)) return false
 
 		for (let v of l.variants) {
 			for (let i = 0; i < (v.length - 1); i++) {
 				const current = stationOf[v[i]]
+				if (!filterStations(current)) return false
 				const next = stationOf[v[i + 1]]
 
 				if (!wroteNode[current]) {
@@ -41,7 +44,7 @@ const computeGraph = async (nodes, edges) => {
 				})
 			}
 		}
-	}
+	})
 }
 
 module.exports = computeGraph

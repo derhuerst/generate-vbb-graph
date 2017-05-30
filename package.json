@@ -8,7 +8,11 @@
 		"compute-graph.js"
 	],
 	"keywords": [
-		"vbb", "public transport", "graph", "jgf", "json"
+		"vbb",
+		"public transport",
+		"graph",
+		"jgf",
+		"json"
 	],
 	"author": "Jannis R <mail@jannisr.de>",
 	"homepage": "https://github.com/derhuerst/generate-vbb-graph",

@@ -3,6 +3,7 @@
 const {stringify} = require('ndjson')
 const fs = require('fs')
 const path = require('path')
+const stations = require('vbb-stations/full.json')
 
 const computeGraph = require('./compute-graph')
 
@@ -23,9 +24,13 @@ edges
 .pipe(fs.createWriteStream(path.join(__dirname, 'edges.ndjson')))
 .on('error', showError)
 
-computeGraph(nodes, edges)
-.catch((err) => {
+const products = ['subway', 'suburban', 'regional', 'tram']
+const filterLines = (l) => products.includes(l.product)
+
+const filterStations = (id) => !!stations[id]
+
+computeGraph(filterLines, filterStations, nodes, edges, (err) => {
 	nodes.end()
 	edges.end()
-	showError(err)
+	if (err) showError(err)
 })
