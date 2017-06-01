@@ -38,13 +38,13 @@ const showError = (err) => {
 const nodes = stringify()
 nodes
 .on('error', showError)
-.pipe(fs.createWriteStream(path.join(__dirname, 'nodes.ndjson')))
+.pipe(fs.createWriteStream('nodes.ndjson'))
 .on('error', showError)
 
 const edges = stringify()
 edges
 .on('error', showError)
-.pipe(fs.createWriteStream(path.join(__dirname, 'edges.ndjson')))
+.pipe(fs.createWriteStream('edges.ndjson'))
 .on('error', showError)
 
 let products = argv.products || argv.p
