@@ -5,7 +5,7 @@ node_js:
   - '7'
   - '6'
 install:
-  - npm update -g npm
+  - npm install -g npm@latest
   - npm install
 script:
   - npm run build
