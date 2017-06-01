@@ -4,6 +4,9 @@ node_js:
   - 'stable'
   - '7'
   - '6'
+install:
+  - npm update -g npm
+  - npm install
 script:
   - npm run build
   - npm test
