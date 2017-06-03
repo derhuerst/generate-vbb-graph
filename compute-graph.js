@@ -30,12 +30,18 @@ const computeGraph = (filterLines, filterStations, nodes, edges, cb) => {
 				if (!wroteNode[current]) {
 					wroteNode[current] = true
 					const s = allStations[current]
-					nodes.write({id: s.id, label: shorten(s.name)})
+					nodes.write({
+						id: s.id, label: shorten(s.name),
+						metadata: s.coordinates
+					})
 				}
 				if (!wroteNode[next]) {
 					wroteNode[next] = true
 					const s = allStations[next]
-					nodes.write({id: s.id, label: shorten(s.name)})
+					nodes.write({
+						id: s.id, label: shorten(s.name),
+						metadata: s.coordinates
+					})
 				}
 
 				const signature = [current, next, l.product, l.name].join('-')
