@@ -2,6 +2,7 @@
 
 const allStations = require('vbb-stations/full.json')
 const lines = require('vbb-lines')
+const shorten = require('vbb-short-station-name')
 
 // stop -> station mapping
 const stationOf = {}
@@ -11,7 +12,8 @@ for (let id in allStations) {
 }
 
 const computeGraph = (filterLines, filterStations, nodes, edges, cb) => {
-	const wroteNode = {} // byID
+	const wroteNode = {} // by ID
+	const wroteEdge = {} // by source ID + target ID + relation + metadata
 
 	lines()
 	.on('end', cb)
@@ -28,20 +30,24 @@ const computeGraph = (filterLines, filterStations, nodes, edges, cb) => {
 				if (!wroteNode[current]) {
 					wroteNode[current] = true
 					const s = allStations[current]
-					nodes.write({id: s.id, label: s.name})
+					nodes.write({id: s.id, label: shorten(s.name)})
 				}
 				if (!wroteNode[next]) {
 					wroteNode[next] = true
 					const s = allStations[next]
-					nodes.write({id: s.id, label: s.name})
+					nodes.write({id: s.id, label: shorten(s.name)})
 				}
 
-				edges.write({
-					source: current,
-					target: next,
-					relation: l.product,
-					metadata: {line: l.name}
-				})
+				const signature = [current, next, l.product, l.name].join('-')
+				if (!wroteEdge[signature]) {
+					wroteEdge[signature] = true
+					edges.write({
+						source: current,
+						target: next,
+						relation: l.product,
+						metadata: {line: l.name}
+					})
+				}
 			}
 		}
 	})
