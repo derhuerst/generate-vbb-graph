@@ -1,5 +1,7 @@
 # generate-vbb-graph
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/derhuerst/generate-vbb-graph.svg)](https://greenkeeper.io/)
+
 **Berlin & Brandenburg public transport as [JGF](http://jsongraphformat.info) file.**
 
 [![npm version](https://img.shields.io/npm/v/generate-vbb-graph.svg)](https://www.npmjs.com/package/generate-vbb-graph)
