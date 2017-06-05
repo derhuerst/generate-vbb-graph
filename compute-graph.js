@@ -11,9 +11,23 @@ for (let id in allStations) {
 	for (let stop of allStations[id].stops) stationOf[stop.id] = id
 }
 
-const computeGraph = (filterLines, filterStations, nodes, edges, cb) => {
+const defaults = {
+	filterLines: () => true,
+	filterStations: () => true
+}
+
+const computeGraph = (nodes, edges, cb, opt = {}) => {
+	const {filterLines, filterStations} = Object.assign({}, defaults, opt)
+
 	const wroteNode = {} // by ID
 	const wroteEdge = {} // by source ID + target ID + relation + metadata
+
+	const writeStation = (id) => {
+		const s = allStations[id]
+		wroteNode[id] = true
+		const node = {id: s.id, label: shorten(s.name), metadata: s.coordinates}
+		nodes.write(node)
+	}
 
 	lines()
 	.on('end', cb)
@@ -27,22 +41,8 @@ const computeGraph = (filterLines, filterStations, nodes, edges, cb) => {
 				if (!filterStations(current)) return false
 				const next = stationOf[v[i + 1]]
 
-				if (!wroteNode[current]) {
-					wroteNode[current] = true
-					const s = allStations[current]
-					nodes.write({
-						id: s.id, label: shorten(s.name),
-						metadata: s.coordinates
-					})
-				}
-				if (!wroteNode[next]) {
-					wroteNode[next] = true
-					const s = allStations[next]
-					nodes.write({
-						id: s.id, label: shorten(s.name),
-						metadata: s.coordinates
-					})
-				}
+				if (!wroteNode[current]) writeStation(current)
+				if (!wroteNode[next]) writeStation(next)
 
 				const signature = [current, next, l.product, l.name].join('-')
 				if (!wroteEdge[signature]) {

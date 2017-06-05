@@ -54,8 +54,8 @@ const filterLines = (l) => products.includes(l.product)
 
 const filterStations = (id) => !!stations[id]
 
-computeGraph(filterLines, filterStations, nodes, edges, (err) => {
+computeGraph(nodes, edges, (err) => {
 	nodes.end()
 	edges.end()
 	if (err) showError(err)
-})
+}, {filterLines, filterStations})
