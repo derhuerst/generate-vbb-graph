@@ -28,6 +28,7 @@
 	"dependencies": {
 		"minimist": "^1.2.0",
 		"ndjson": "^1.5.0",
+		"projections": "^1.0.0",
 		"vbb-lines": "^3.2.0",
 		"vbb-short-station-name": "^0.2.0",
 		"vbb-stations": "^5.2.0"

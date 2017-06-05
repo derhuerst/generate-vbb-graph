@@ -5,6 +5,7 @@ const minimist = require('minimist')
 const {stringify} = require('ndjson')
 const fs = require('fs')
 const path = require('path')
+const projections = require('projections')
 const stations = require('vbb-stations/full.json')
 
 const pkg = require('./package.json')
@@ -17,10 +18,12 @@ if (argv.help || argv.h) {
 Usage:
     generate-vbb-graph [-p subway,tram]
 Options:
-    --products  -p  A list of products. These are available:
-                    suburban, subway, regional, tram, ferry, bus
+    --products    -p  A list of products. These are available:
+                      suburban, subway, regional, tram, ferry, bus
+    --projection  -P  Wether and how to project the station coordinates.
+                      See juliuste/projections for details.
 Examples:
-    generate-vbb-graph -p subway,tram
+    generate-vbb-graph -p subway,tram -P mercator
 \n`)
 	process.exit(0)
 }
@@ -52,10 +55,16 @@ if (products) products = products.split(',').map((p) => p.trim())
 else products = ['subway', 'suburban', 'regional', 'tram']
 const filterLines = (l) => products.includes(l.product)
 
+let projection = argv.projection || argv.P || null
+if (projection) {
+	if (projection in projections) projection = projections[projection]
+	else throw new Error('unknown projection ' + projection)
+}
+
 const filterStations = (id) => !!stations[id]
 
 computeGraph(nodes, edges, (err) => {
 	nodes.end()
 	edges.end()
 	if (err) showError(err)
-}, {filterLines, filterStations})
+}, {filterLines, filterStations, projection})

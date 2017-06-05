@@ -21,10 +21,12 @@ npm install -g generate-vbb-graph
 Usage:
     generate-vbb-graph [-p subway,tram]
 Options:
-    --products  -p  A list of products. These are available:
-                    suburban, subway, regional, tram, ferry, bus
+    --products    -p  A list of products. These are available:
+                      suburban, subway, regional, tram, ferry, bus
+    --projection  -P  Wether and how to project the station coordinates.
+                      See juliuste/projections for details.
 Examples:
-    generate-vbb-graph -p subway,tram
+    generate-vbb-graph -p subway,tram -P mercator
 ```
 
 This tool generates data in the [JSON Graph Format](https://github.com/jsongraph/json-graph-specification/blob/master/README.rst#json-graph-specification). Note that instead of storing all nodes and edges in one JSON file, **it will create `nodes.ndjson` and `edges.ndjson`. These are [ndjson](http://ndjson.org)-encoded lists of all nodes and edges**, respectively.

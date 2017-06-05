@@ -13,11 +13,12 @@ for (let id in allStations) {
 
 const defaults = {
 	filterLines: () => true,
-	filterStations: () => true
+	filterStations: () => true,
+	projection: null
 }
 
 const computeGraph = (nodes, edges, cb, opt = {}) => {
-	const {filterLines, filterStations} = Object.assign({}, defaults, opt)
+	const {filterLines, filterStations, projection} = Object.assign({}, defaults, opt)
 
 	const wroteNode = {} // by ID
 	const wroteEdge = {} // by source ID + target ID + relation + metadata
@@ -25,7 +26,19 @@ const computeGraph = (nodes, edges, cb, opt = {}) => {
 	const writeStation = (id) => {
 		const s = allStations[id]
 		wroteNode[id] = true
-		const node = {id: s.id, label: shorten(s.name), metadata: s.coordinates}
+		const node = {id: s.id, label: shorten(s.name)}
+
+		if (projection) {
+			const {x, y} = projection({
+				lat: s.coordinates.latitude,
+				lon: s.coordinates.longitude
+			})
+			node.metadata = {
+				x: Math.round(x * 1000 * 1000) / 1000,
+				y: Math.round(y * 1000 * 1000) / 1000
+			}
+		} else node.metadata = s.coordinates
+
 		nodes.write(node)
 	}
 
