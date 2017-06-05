@@ -27,8 +27,12 @@ test('nodes.ndjson', (t) => {
 		t.ok(stations[node.id], 'invalid station id')
 		t.equal(typeof node.label, 'string')
 		t.ok(node.metadata, 'missing metadata')
-		t.equal(typeof node.metadata.latitude, 'number')
-		t.equal(typeof node.metadata.longitude, 'number')
+		if ('number' === typeof node.metadata.x) {
+			t.equal(typeof node.metadata.y, 'number')
+		} else {
+			t.equal(typeof node.metadata.latitude, 'number')
+			t.equal(typeof node.metadata.longitude, 'number')
+		}
 	})
 	.on('end', () => t.end())
 })
