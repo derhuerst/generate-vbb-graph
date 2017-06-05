@@ -29,9 +29,11 @@
 		"minimist": "^1.2.0",
 		"ndjson": "^1.5.0",
 		"projections": "^1.0.0",
+		"through2": "^2.0.3",
 		"vbb-lines": "^3.2.0",
 		"vbb-short-station-name": "^0.2.0",
-		"vbb-stations": "^5.2.0"
+		"vbb-stations": "^5.2.0",
+		"vbb-trips": "^2.3.0"
 	},
 	"devDependencies": {
 		"tape": "^4.6.3",

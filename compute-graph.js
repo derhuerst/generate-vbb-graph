@@ -1,8 +1,10 @@
 'use strict'
 
 const allStations = require('vbb-stations/full.json')
-const lines = require('vbb-lines')
+const readLines = require('vbb-lines')
 const shorten = require('vbb-short-station-name')
+
+const readSchedules = require('./read-schedules')
 
 // stop -> station mapping
 const stationOf = {}
@@ -42,33 +44,52 @@ const computeGraph = (nodes, edges, cb, opt = {}) => {
 		nodes.write(node)
 	}
 
-	lines()
-	.on('end', cb)
+	const lines = {} // by id
+	readLines()
 	.on('error', cb)
 	.on('data', (l) => {
-		if (!filterLines(l)) return false
-
-		for (let v of l.variants) {
-			for (let i = 0; i < (v.length - 1); i++) {
-				const current = stationOf[v[i]]
+		if (filterLines(l)) lines[l.id] = l
+	})
+	.on('end', () => {
+		readSchedules(lines)
+		.on('error', cb)
+		.on('data', (s) => {
+			for (let i = 0; (i + 1) < s.route.stops.length; i++) {
+				const current = stationOf[s.route.stops[i]]
 				if (!filterStations(current)) return false
-				const next = stationOf[v[i + 1]]
+				const next = stationOf[s.route.stops[i + 1]]
 
 				if (!wroteNode[current]) writeStation(current)
 				if (!wroteNode[next]) writeStation(next)
 
-				const signature = [current, next, l.product, l.name].join('-')
+				let start = s.sequence[i]
+				if ('number' === typeof start.departure)  start = start.departure
+				else if ('number' === typeof start.arrival) start = start.arrival
+				else continue // todo
+
+				let end = s.sequence[i + 1]
+				if ('number' === typeof end.departure)  end = end.departure
+				else if ('number' === typeof end.arrival) end = end.arrival
+				else continue // todo
+
+				const l = s.route.line
+				const signature = [
+					current, next,
+					l.product, l.name,
+					end - start
+				].join('-')
 				if (!wroteEdge[signature]) {
 					wroteEdge[signature] = true
 					edges.write({
 						source: current,
 						target: next,
 						relation: l.product,
-						metadata: {line: l.name}
+						metadata: {line: l.name, time: end - start}
 					})
 				}
 			}
-		}
+		})
+		.on('end', cb)
 	})
 }
 

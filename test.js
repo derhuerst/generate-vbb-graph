@@ -54,6 +54,7 @@ test('edges.ndjson', (t) => {
 			t.ok(isValidProduct(edge.relation), 'invalid product')
 			t.ok(edge.metadata, 'missing metadata')
 			t.ok(typeof edge.metadata.line, 'string')
+			t.ok(typeof edge.metadata.time, 'number')
 		})
 		.on('end', () => t.end())
 	})
