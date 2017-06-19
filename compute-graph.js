@@ -3,6 +3,7 @@
 const allStations = require('vbb-stations/full.json')
 const readLines = require('vbb-lines')
 const shorten = require('vbb-short-station-name')
+const deepEqual = require('lodash.isequal')
 
 const readSchedules = require('./read-schedules')
 
@@ -16,11 +17,24 @@ for (let id in allStations) {
 const defaults = {
 	filterLines: () => true,
 	filterStations: () => true,
-	projection: null
+	projection: null,
+	deduplicateVariants: (line) => line.variants
+}
+
+const isEqualVariant = (model) => {
+	const m = model.map((stop) => stationOf[stop])
+	return (variant) => {
+		const v = variant.map((stop) => stationOf[stop])
+		return deepEqual(m, v)
+	}
 }
 
 const computeGraph = (nodes, edges, cb, opt = {}) => {
-	const {filterLines, filterStations, projection} = Object.assign({}, defaults, opt)
+	const {
+		filterLines, filterStations,
+		projection,
+		deduplicateVariants
+	} = Object.assign({}, defaults, opt)
 
 	const wroteNode = {} // by ID
 	const wroteEdge = {} // by source ID + target ID + relation + metadata
@@ -47,13 +61,21 @@ const computeGraph = (nodes, edges, cb, opt = {}) => {
 	const lines = {} // by id
 	readLines()
 	.on('error', cb)
-	.on('data', (l) => {
-		if (filterLines(l)) lines[l.id] = l
+	.on('data', (line) => {
+		if (!filterLines(line)) return
+
+		lines[line.id] = Object.assign({}, line, {
+			variants: deduplicateVariants(line)
+		})
 	})
 	.on('end', () => {
 		readSchedules(lines)
 		.on('error', cb)
 		.on('data', (s) => {
+			const line = s.route.line
+			// check if this variant appears in the filtered list of line variants
+			if (!line.variants.some(isEqualVariant(s.route.stops))) return
+
 			for (let i = 0; (i + 1) < s.route.stops.length; i++) {
 				const current = stationOf[s.route.stops[i]]
 				if (!filterStations(current)) return false
@@ -72,10 +94,9 @@ const computeGraph = (nodes, edges, cb, opt = {}) => {
 				else if ('number' === typeof end.arrival) end = end.arrival
 				else continue // todo
 
-				const l = s.route.line
 				const signature = [
 					current, next,
-					l.product, l.name,
+					line.product, line.name,
 					end - start
 				].join('-')
 				if (!wroteEdge[signature]) {
@@ -83,8 +104,8 @@ const computeGraph = (nodes, edges, cb, opt = {}) => {
 					edges.write({
 						source: current,
 						target: next,
-						relation: l.product,
-						metadata: {line: l.name, time: end - start}
+						relation: line.product,
+						metadata: {line: line.name, time: end - start}
 					})
 				}
 			}
