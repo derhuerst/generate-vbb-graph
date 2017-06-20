@@ -5,7 +5,8 @@
 	"version": "0.2.0",
 	"files": [
 		"cli.js",
-		"compute-graph.js"
+		"compute-graph.js",
+		"read-schedules.js"
 	],
 	"bin": {
 		"generate-vbb-graph": "./cli.js"

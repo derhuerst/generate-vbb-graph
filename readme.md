@@ -21,10 +21,12 @@ npm install -g generate-vbb-graph
 Usage:
     generate-vbb-graph [-p subway,tram]
 Options:
-    --products    -p  A list of products. These are available:
-                      suburban, subway, regional, tram, ferry, bus
-    --projection  -P  Wether and how to project the station coordinates.
-                      See juliuste/projections for details.
+    --products      -p  A list of products. These are available:
+                        suburban, subway, regional, tram, ferry, bus
+    --projection    -P  Wether and how to project the station coordinates.
+                        See juliuste/projections for details.
+    --simple-lines  -s  Use a heuristic to keep only the most "canonical"
+                        variant of each line. Default: false
 Examples:
     generate-vbb-graph -p subway,tram -P mercator
 ```
