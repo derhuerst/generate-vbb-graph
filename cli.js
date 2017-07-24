@@ -19,12 +19,14 @@ if (argv.help || argv.h) {
 Usage:
     generate-vbb-graph [-p subway,tram]
 Options:
-    --products      -p  A list of products. These are available:
-                        suburban, subway, regional, tram, ferry, bus
-    --projection    -P  Wether and how to project the station coordinates.
-                        See juliuste/projections for details.
-    --simple-lines  -s  Use a heuristic to keep only the most "canonical"
-                        variant of each line. Default: false
+    --products             -p  A list of products. These are available:
+                               suburban, subway, regional, tram, ferry, bus
+    --projection           -P  Wether and how to project the station coordinates.
+                               See juliuste/projections for details.
+    --simple-lines         -s  Use a heuristic to keep only the most "canonical"
+                               variant of each line. Default: false
+    --simple-deduplication -d  Deduplicate edges without taking the travel
+                               time into account. Default: false
 Examples:
     generate-vbb-graph -p subway,tram -P mercator
 \n`)
@@ -70,6 +72,9 @@ if (projection) {
 	if (projection in projections) opt.projection = projections[projection]
 	else throw new Error('unknown projection ' + projection)
 }
+
+const simpleDeduplication = argv['simple-deduplication'] || argv.d || null
+opt.simpleDeduplication = simpleDeduplication
 
 if (argv['simple-lines'] || argv.s) {
 	const deduplicateVariants = (line) => {

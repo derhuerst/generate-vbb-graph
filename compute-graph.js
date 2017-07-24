@@ -18,7 +18,8 @@ const defaults = {
 	filterLines: () => true,
 	filterStations: () => true,
 	projection: null,
-	deduplicateVariants: (line) => line.variants
+	deduplicateVariants: (line) => line.variants,
+	simpleDeduplication: false
 }
 
 const isEqualVariant = (model) => {
@@ -94,11 +95,13 @@ const computeGraph = (nodes, edges, cb, opt = {}) => {
 				else if ('number' === typeof end.arrival) end = end.arrival
 				else continue // todo
 
-				const signature = [
+				let signature = [
 					current, next,
-					line.product, line.name,
-					end - start
-				].join('-')
+					line.product, line.name
+				]
+				if (!opt.simpleDeduplication) signature.push(end - start)
+				signature = signature.join('-')
+
 				if (!wroteEdge[signature]) {
 					wroteEdge[signature] = true
 					edges.write({
