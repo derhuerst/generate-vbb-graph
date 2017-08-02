@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict'
 
-const minimist = require('minimist')
+const mri = require('mri')
 const {stringify} = require('ndjson')
 const fs = require('fs')
 const path = require('path')
@@ -12,7 +12,14 @@ const stations = require('vbb-stations/full.json')
 const pkg = require('./package.json')
 const computeGraph = require('./compute-graph')
 
-const argv = minimist(process.argv.slice(2))
+const argv = mri(process.argv.slice(2), {
+	boolean: [
+		'help', 'h',
+		'version', 'v',
+		'simple-lines', 's',
+		'simple-deduplication', 'd'
+	]
+})
 
 if (argv.help || argv.h) {
 	process.stdout.write(`
