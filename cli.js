@@ -17,7 +17,8 @@ const argv = mri(process.argv.slice(2), {
 		'help', 'h',
 		'version', 'v',
 		'simple-lines', 's',
-		'simple-deduplication', 'd'
+		'simple-deduplication', 'd',
+		'lines-blacklist', 'b'
 	]
 })
 
@@ -34,6 +35,7 @@ Options:
                                variant of each line. Default: false
     --simple-deduplication -d  Deduplicate edges without taking the travel
                                time into account. Default: false
+    --lines-blacklist      -b  Apply a blacklist of weird lines. Default: false
 Examples:
     generate-vbb-graph -p subway,tram -P mercator
 \n`)
@@ -68,7 +70,14 @@ let products = argv.products || argv.p
 if (products) products = products.split(',').map((p) => p.trim())
 else products = ['subway', 'suburban', 'regional', 'tram']
 
-const filterLines = (l) => products.includes(l.product)
+let linesBlacklist = []
+if (argv['lines-blacklist'] || argv.b) {
+	linesBlacklist = require('./lines-blacklist.js')
+}
+
+const filterLines = (l) => {
+	return !linesBlacklist.includes(l.id) && products.includes(l.product)
+}
 opt.filterLines = filterLines
 
 const filterStations = (id) => !!stations[id]

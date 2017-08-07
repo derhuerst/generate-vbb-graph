@@ -29,6 +29,7 @@ Options:
                                variant of each line. Default: false
     --simple-deduplication -d  Deduplicate edges without taking the travel
                                time into account. Default: false
+    --lines-blacklist      -b  Apply a blacklist of weird lines. Default: false
 Examples:
     generate-vbb-graph -p subway,tram -P mercator
 ```
