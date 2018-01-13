@@ -47,14 +47,14 @@ const computeGraph = (nodes, edges, cb, opt = {}) => {
 
 		if (projection) {
 			const {x, y} = projection({
-				lat: s.coordinates.latitude,
-				lon: s.coordinates.longitude
+				lat: s.location.latitude,
+				lon: s.location.longitude
 			})
 			node.metadata = {
 				x: Math.round(x * 1000 * 1000) / 1000,
 				y: Math.round(y * 1000 * 1000) / 1000
 			}
-		} else node.metadata = s.coordinates
+		} else node.metadata = s.location
 
 		nodes.write(node)
 	}
