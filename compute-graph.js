@@ -8,7 +8,7 @@ const deepEqual = require('lodash.isequal')
 const readSchedules = require('./read-schedules')
 
 // stop -> station mapping
-const stationOf = {}
+const stationOf = Object.create(null)
 for (let id in allStations) {
 	stationOf[id] = id
 	for (let stop of allStations[id].stops) stationOf[stop.id] = id
@@ -23,9 +23,9 @@ const defaults = {
 }
 
 const isEqualVariant = (model) => {
-	const m = model.map((stop) => stationOf[stop])
+	const m = model.map(stop => stationOf[stop])
 	return (variant) => {
-		const v = variant.map((stop) => stationOf[stop])
+		const v = variant.map(stop => stationOf[stop])
 		return deepEqual(m, v)
 	}
 }
@@ -59,7 +59,7 @@ const computeGraph = (nodes, edges, cb, opt = {}) => {
 		nodes.write(node)
 	}
 
-	const lines = {} // by id
+	const lines = Object.create(null) // by id
 	readLines()
 	.on('error', cb)
 	.on('data', (line) => {

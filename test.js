@@ -24,7 +24,7 @@ test('nodes.ndjson', (t) => {
 	.on('error', t.ifError)
 	.on('data', (node) => {
 		t.equal(typeof node.id, 'string')
-		t.ok(stations[node.id], 'invalid station id')
+		t.ok(stations[node.id], 'invalid station id ' + node.id)
 		t.equal(typeof node.label, 'string')
 		t.ok(node.metadata, 'missing metadata')
 		if ('number' === typeof node.metadata.x) {
