@@ -29,6 +29,7 @@
 	"dependencies": {
 		"lodash.isequal": "^4.5.0",
 		"lodash.maxby": "^4.6.0",
+		"merged-vbb-stations": "^1.2.0",
 		"mri": "^1.1.0",
 		"ndjson": "^1.5.0",
 		"projections": "^1.0.0",

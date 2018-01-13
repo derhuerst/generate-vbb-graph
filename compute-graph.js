@@ -1,10 +1,11 @@
 'use strict'
 
-const allStations = require('vbb-stations/full.json')
+const mapping = require('merged-vbb-stations')
+const deepEqual = require('lodash.isequal')
 const readLines = require('vbb-lines')
 const shorten = require('vbb-short-station-name')
-const deepEqual = require('lodash.isequal')
 
+const allStations = require('./lib/merged-stations')
 const readSchedules = require('./lib/read-schedules')
 
 // stop -> station mapping
@@ -12,6 +13,14 @@ const stationOf = Object.create(null)
 for (let id in allStations) {
 	stationOf[id] = id
 	for (let stop of allStations[id].stops) stationOf[stop.id] = id
+}
+
+// map remapped stations
+for (let oldId in mapping) {
+	if (!Object.prototype.hasOwnProperty.call(mapping, oldId)) continue
+	const newId = mapping[oldId]
+	if (newId === oldId) continue
+	stationOf[oldId] = newId
 }
 
 const defaults = {
