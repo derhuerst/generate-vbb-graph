@@ -72,7 +72,7 @@ else products = ['subway', 'suburban', 'regional', 'tram']
 
 let linesBlacklist = []
 if (argv['lines-blacklist'] || argv.b) {
-	linesBlacklist = require('./lines-blacklist.js')
+	linesBlacklist = require('./lib/lines-blacklist.js')
 }
 
 const filterLines = (l) => {

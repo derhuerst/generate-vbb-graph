@@ -5,7 +5,7 @@ const readLines = require('vbb-lines')
 const shorten = require('vbb-short-station-name')
 const deepEqual = require('lodash.isequal')
 
-const readSchedules = require('./read-schedules')
+const readSchedules = require('./lib/read-schedules')
 
 // stop -> station mapping
 const stationOf = Object.create(null)
