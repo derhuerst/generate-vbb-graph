@@ -6,8 +6,7 @@
 	"files": [
 		"cli.js",
 		"compute-graph.js",
-		"read-schedules.js",
-		"lines-blacklist.js"
+		"lib"
 	],
 	"bin": {
 		"generate-vbb-graph": "./cli.js"
