@@ -70,13 +70,13 @@ let products = argv.products || argv.p
 if (products) products = products.split(',').map((p) => p.trim())
 else products = ['subway', 'suburban', 'regional', 'tram']
 
-let linesBlacklist = []
+let linesBlacklist = () => true
 if (argv['lines-blacklist'] || argv.b) {
 	linesBlacklist = require('./lib/lines-blacklist.js')
 }
 
 const filterLines = (l) => {
-	return !linesBlacklist.includes(l.id) && products.includes(l.product)
+	return products.includes(l.product) && linesBlacklist(l)
 }
 opt.filterLines = filterLines
 
