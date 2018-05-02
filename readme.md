@@ -1,11 +1,12 @@
 # generate-vbb-graph
 
-**Berlin & Brandenburg public transport as [JGF](http://jsongraphformat.info) file.** See [`vbb-graph`](https://github.com/derhuerst/vbb-graph) for published prebuilt data.
+**Generate a JSON graph from Berlin & Brandenburg public transport** Writes a [JGF](http://jsongraphformat.info) file. See [`vbb-graph`](https://github.com/derhuerst/vbb-graph) for published prebuilt data.
 
 [![npm version](https://img.shields.io/npm/v/generate-vbb-graph.svg)](https://www.npmjs.com/package/generate-vbb-graph)
 [![build status](https://img.shields.io/travis/derhuerst/generate-vbb-graph.svg)](https://travis-ci.org/derhuerst/generate-vbb-graph)
 ![ISC-licensed](https://img.shields.io/github/license/derhuerst/generate-vbb-graph.svg)
 [![chat on gitter](https://badges.gitter.im/derhuerst.svg)](https://gitter.im/derhuerst)
+[![support me on Patreon](https://img.shields.io/badge/support%20me-on%20patreon-fa7664.svg)](https://patreon.com/derhuerst)
 
 
 ## Installing
