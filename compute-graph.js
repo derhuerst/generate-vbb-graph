@@ -42,6 +42,7 @@ const computeGraph = (nodes, edges, cb, opt = {}) => {
 
 	const writeStation = (id) => {
 		const s = allStations[id]
+		if (!s) return // todo: log err
 		wroteNode[id] = true
 		const node = {id: s.id, label: shorten(s.name)}
 
