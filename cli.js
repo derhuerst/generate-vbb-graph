@@ -6,8 +6,9 @@ const {stringify} = require('ndjson')
 const fs = require('fs')
 const pump = require('pump')
 const projections = require('projections')
-const maxBy = require('lodash.maxby')
 const stations = require('vbb-stations/full.json')
+const computeLineVariantScore = require('vbb-line-variant-score')
+const hifo = require('hifo')
 
 const pkg = require('./package.json')
 const computeGraph = require('./compute-graph')
@@ -90,10 +91,14 @@ opt.simpleDeduplication = simpleDeduplication
 
 if (argv['simple-lines'] || argv.s) {
 	const deduplicateVariants = (line) => {
-		// really really simple heuristic: pick the longest variant
-		// todo: write a smarter heuristic that picks the longest variant from those with the highest number of stations common with the other ones
-		// todo: publish an npm module for this
-		return [maxBy(line.variants, variant => variant.length)]
+		const computeScore = computeLineVariantScore(line.variants)
+		const highest = hifo(hifo.highest(0), 2)
+		for (let v of line.variants) {
+			highest.add([
+				computeScore(v), v
+			])
+		}
+		return highest.data.map(result => result[1])
 	}
 	opt.deduplicateVariants = deduplicateVariants
 }
