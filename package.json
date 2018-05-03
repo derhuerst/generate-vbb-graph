@@ -2,7 +2,7 @@
 	"preferGlobal": true,
 	"name": "generate-vbb-graph",
 	"description": "Berlin & Brandenburg public transport as JGF file.",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"files": [
 		"cli.js",
 		"compute-graph.js",
