@@ -48,8 +48,9 @@ const computeGraph = (nodes, edges, cb, opt = {}) => {
 		deduplicateVariants
 	} = Object.assign({}, defaults, opt)
 
-	const wroteNode = {} // by ID
-	const wroteEdge = {} // by source ID + target ID + relation + metadata
+	const wroteNode = Object.create(null) // by ID
+	// by source ID + target ID + relation + metadata
+	const wroteEdge = Object.create(null)
 
 	const lines = Object.create(null) // by id
 	const writeLine = (line, _, cb) => {
@@ -82,7 +83,7 @@ const computeGraph = (nodes, edges, cb, opt = {}) => {
 
 	const writeSchedule = (s, _, cb) => {
 		const line = lines[s.route.line]
-		if (!line) return cb()
+		if (!line) return cb() // todo: bail instead
 
 		// check if this variant appears in the filtered list of line variants
 		if (!line.variants.some(isEqualVariant(s.route.stops))) return cb()
@@ -94,7 +95,7 @@ const computeGraph = (nodes, edges, cb, opt = {}) => {
 				return cb(new Error('unknown station ' + current))
 			}
 			const next = stationOf[s.route.stops[i + 1]]
-			// todo: filterStations(next) ?
+			if (!filterStations(next)) continue
 			if (!allStations[next]) {
 				return cb(new Error('unknown station ' + next))
 			}

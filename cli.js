@@ -4,7 +4,7 @@
 const mri = require('mri')
 const {stringify} = require('ndjson')
 const fs = require('fs')
-const path = require('path')
+const pump = require('pump')
 const projections = require('projections')
 const maxBy = require('lodash.maxby')
 const stations = require('vbb-stations/full.json')
@@ -48,21 +48,17 @@ if (argv.version || argv.v) {
 }
 
 const showError = (err) => {
-	console.error(err)
-	process.exit(1)
+	if (err) {
+		console.error(err)
+		process.exit(1)
+	}
 }
 
 const nodes = stringify()
-nodes
-.on('error', showError)
-.pipe(fs.createWriteStream('nodes.ndjson'))
-.on('error', showError)
+pump(nodes, fs.createWriteStream('nodes.ndjson'), showError)
 
 const edges = stringify()
-edges
-.on('error', showError)
-.pipe(fs.createWriteStream('edges.ndjson'))
-.on('error', showError)
+pump(edges, fs.createWriteStream('edges.ndjson'), showError)
 
 const opt = {}
 
@@ -96,8 +92,8 @@ if (argv['simple-lines'] || argv.s) {
 	const deduplicateVariants = (line) => {
 		// really really simple heuristic: pick the longest variant
 		// todo: write a smarter heuristic that picks the longest variant from those with the highest number of stations common with the other ones
-		// todo: publish an npm mobule for this
-		return [maxBy(line.variants, (variant) => variant.length)]
+		// todo: publish an npm module for this
+		return [maxBy(line.variants, variant => variant.length)]
 	}
 	opt.deduplicateVariants = deduplicateVariants
 }
