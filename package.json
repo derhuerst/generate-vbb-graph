@@ -35,7 +35,7 @@
 		"projections": "^1.0.0",
 		"pump": "^3.0.0",
 		"through2": "^2.0.3",
-		"vbb-line-variant-score": "^0.1.0",
+		"vbb-line-variant-score": "^0.2.0",
 		"vbb-lines": "^4.0.0",
 		"vbb-short-station-name": "^1.0.1",
 		"vbb-stations": "^6.1.0",
