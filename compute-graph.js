@@ -36,7 +36,7 @@ const defaults = {
 const isEqualVariant = (model) => {
 	const m = model.map(stop => stationOf[stop])
 	return (variant) => {
-		const v = variant.stations.map(stop => stationOf[stop])
+		const v = variant.stops.map(stop => stationOf[stop])
 		return deepEqual(m, v)
 	}
 }
