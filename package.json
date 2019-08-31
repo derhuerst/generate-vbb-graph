@@ -38,7 +38,7 @@
 		"vbb-line-variant-score": "^0.2.0",
 		"vbb-lines": "^4.0.0",
 		"vbb-short-station-name": "^1.0.1",
-		"vbb-stations": "^6.1.0",
+		"vbb-stations": "^7.0.0",
 		"vbb-trips": "^3.0.0"
 	},
 	"devDependencies": {
