@@ -42,7 +42,7 @@
 		"vbb-trips": "^3.0.0"
 	},
 	"devDependencies": {
-		"tape": "^4.6.3",
+		"tape": "^5.0.0",
 		"tap-min": "^1.2.1"
 	},
 	"scripts": {
