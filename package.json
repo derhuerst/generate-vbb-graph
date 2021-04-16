@@ -24,7 +24,7 @@
 	"bugs": "https://github.com/derhuerst/generate-vbb-graph/issues",
 	"license": "ISC",
 	"engines": {
-		"node": ">=6"
+		"node": ">=12"
 	},
 	"dependencies": {
 		"hifo": "^1.0.0",
