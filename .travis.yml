@@ -1,10 +1,9 @@
-sudo: false
 language: node_js
 node_js:
   - 'stable'
   - 'lts/*'
 script:
-  - npm run build
+  - ./cli.js
   - npm test
 after_script:
   - ls -lh *.ndjson
